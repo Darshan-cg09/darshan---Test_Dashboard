@@ -1,6 +1,5 @@
 
 require('dotenv').config();
-
 const express = require('express');
 const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
@@ -11,7 +10,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 5500; // Changed to 5500
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
 const pool = new Pool({
@@ -22,28 +21,18 @@ const pool = new Pool({
   port: parseInt(process.env.DB_PORT) || 5432,
 });
 
-const allowedOrigins = [
-  'http://127.0.0.1:5500',
-  'http://localhost:3000'
-];
-
+// In your server.js
 app.use(cors({
-  origin: 'http://127.0.0.1:5500', // or your exact frontend origin
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  exposedHeaders: ['set-cookie']
+    origin: 'http://127.0.0.1:5500',
+    credentials: true,
+    exposedHeaders: ['set-cookie']
 }));
-app.use((req, res, next) => {
-  console.log('Incoming request:', req.method, req.url);
-  console.log('Headers:', req.headers);
-  console.log('Cookies:', req.cookies);
-  next();
-});
+
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../')));
+
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -270,32 +259,31 @@ app.post('/api/forgot-password', async (req, res) => {
   }
 });
 
+// server.js - Verify this endpoint
 app.get('/api/user', authenticateToken, async (req, res) => {
-  try {
-    const result = await pool.query(
-      'SELECT id, name, email, profile_picture FROM users WHERE email = $1',
-      [req.user.email]
-    );
-    
-    if (result.rows.length === 0) {
-      console.log('User not found for email:', req.user.email);
-      return res.status(404).json({ error: 'User not found' });
-    }
+    try {
+        const result = await pool.query(
+            'SELECT id, name, email, profile_picture FROM users WHERE email = $1',
+            [req.user.email]
+        );
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
 
-    const user = result.rows[0];
-    console.log('User data retrieved:', user.email);
-    res.status(200).json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      profilePicture: user.profile_picture 
-        ? `data:image/jpeg;base64,${user.profile_picture}` 
-        : null
-    });
-  } catch (error) {
-    console.error('User data error:', error);
-    res.status(500).json({ error: 'Server error' });
-  }
+        const user = result.rows[0];
+        res.json({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            profilePicture: user.profile_picture 
+                ? `data:image/jpeg;base64,${user.profile_picture}` 
+                : null
+        });
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
 });
 
 app.post('/api/logout', (req, res) => {
@@ -313,9 +301,9 @@ app.get('/api/protected', authenticateToken, (req, res) => {
 });
 
 initDatabase().then(() => {
-  app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
-    console.log('Available routes:');
+app.listen(port, '127.0.0.1', () => {
+  console.log(`Server running on http://127.0.0.1:${port}`);
+  console.log('Available routes:');
     console.log('GET  /                 -> Login page');
     console.log('GET  /signup           -> Signup page');
     console.log('GET  /forgot-password  -> Forgot password page');

@@ -218,6 +218,8 @@
         profilePictureInput.addEventListener('change', function () {
             validateProfilePicture();
         });
+            // Update fetch URL to your desired endpoint
+    const API_BASE_URL = 'http://127.0.0.1:5500';
 
         fingerprintIcon.addEventListener('click', function () {
             alert("Fingerprint authentication initiated. Please place your finger on the sensor.");
@@ -264,7 +266,7 @@
             }
 
             try {
-                const response = await fetch('http://localhost:3000/api/signup', {
+                const response = await fetch('http://127.0.0.1:5500/api/signup', {
                     method: 'POST',
                     credentials: 'include', // Important for cookies
                     body: formData

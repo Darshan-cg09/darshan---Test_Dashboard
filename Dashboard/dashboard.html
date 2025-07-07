@@ -21,7 +21,29 @@
       --gradient-start: #6366f1;
       --gradient-end: #4338ca;
     }
+        /* Animation definitions */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
     body {
       margin: 0;
       font-family: 'Arial', sans-serif;
@@ -41,11 +63,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: white;
+      background: var(--header-bg);
       padding: 10px 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.132);
+      box-shadow: 0 2px 30px rgba(0, 0, 0, 0.1);
       z-index: 1000;
       box-sizing: border-box;
+      animation: fadeIn 0.6s ease-out;
     }
 
     .header-left {
@@ -60,27 +83,36 @@
       border: none;
       font-size: 24px;
       cursor: pointer;
-      color: black;
+      color: var(--primary-color);
       display: flex;
       align-items: center;
       justify-content: center;
       width: 40px;
       height: 40px;
-      border-radius: 8px;
-      transition: background-color 0.3s;
+      border-radius: 12px;
+      transition: all 0.3s;
+      background: rgba(108, 92, 231, 0.1);
     }
 
     .toggle-btn:hover {
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: var(--primary-color);
+      color:white;
+      transform: rotate(90deg);
     }
 
     .logo {
       text-align: center;
+      animation: pulse 4s infinite;
     }
 
     .company-logo {
       max-width: 150px;
       height: auto;
+      transition: all 0.3s;
+    }
+
+    .company-logo:hover {
+      transform: scale(1.05);
     }
 
     /* Search Bar */
@@ -90,57 +122,87 @@
       align-items: center;
       width: 350px;
       margin-left: 20px;
+      animation: fadeIn 0.8s ease-out;
     }
 
     .search-input {
       width: 100%;
-      padding: 10px 40px 10px 15px;
-      border: 1px solid #d1d1d1;
-      border-radius: 25px;
+      padding: 12px 45px 12px 20px;
+      border: 2px solid rgba(108, 92, 231, 0.2);
+      border-radius: 30px;
       outline: none;
       font-size: 16px;
-      background: #f9f9f9;
-      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+      background: white;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 5px 20px rgba(108, 92, 231, 0.2);
     }
 
     .search-icon {
       position: absolute;
-      right: 12px;
+      right: 15px;
       top: 50%;
       transform: translateY(-50%);
       width: 20px;
       height: 20px;
-      background: url('https://cdn-icons-png.flaticon.com/512/622/622669.png') no-repeat center;
+      background: url('https://cdn-icons-png.flaticon.com/512/149/149852.png') no-repeat center;
       background-size: contain;
+      filter: hue-rotate(200deg);
     }
 
     /* Header right section */
     .header-right {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 25px;
+      animation: fadeIn 1s ease-out;
+      margin-right: 20px;
     }
 
     .header-right .icon,
     .notification-icon,
     .calenadar {
-      color: rgb(0, 0, 0);
+      color: var(--dark-color);
       cursor: pointer;
-      padding: 8px;
-      border-radius: 8px;
-      transition: background-color 0.3s;
+      padding: 10px;
+      border-radius: 12px;
+      transition: all 0.3s;
+      position: relative;
     }
 
     .header-right .icon:hover,
     .notification-icon:hover,
     .calenadar:hover {
-      background-color: rgba(141, 138, 138, 0.1);
+      background-color: rgba(108, 92, 231, 0.1);
+      transform: translateY(-3px);
     }
+
+    .notification-icon::after {
+      /* content: ''; */
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--danger-color);
+      color: white;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse 1.5s infinite;
+    }
+
 
     /* Sidebar styles */
     .sidebar {
       width: 195px;
-      height: calc(100vh - 90px);
+      height: calc(100vh - 100px);
       position: fixed;
       left: 0;
       top: 90px;
@@ -296,7 +358,7 @@
       height: 100%;
       background: #fff;
       border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      /* box-shadow: 0 4px 6px rgba(0,0,0,0.1); */
     }
 
     /* Logout Button Link Container */
@@ -660,43 +722,53 @@
   </style>
 </head>
   <body>
-      <!-- Modal for Adding a New Status -->
-      <div class="modal" id="addStatusModal">
-          <div class="modal-content">
-              <h2>Add New Status</h2>
-              <form id="addStatusForm">
-                  <div>
-                      <label for="statusName">Status Name:</label>
-                      <input type="text" id="statusName" name="statusName" placeholder="Enter status name" required>
-                  </div>
-                  <div>
-                      <label for="statusColor">Status Color:</label>
-                      <input type="color" id="statusColor" name="statusColor" value="#000000">
-                  </div>
-                  <div class="modal-buttons">
-                      <button type="submit" class="submit-btn">Submit</button>
-                      <button type="button" class="cancel-btn" id="cancelModal">Cancel</button>
-                  </div>
-              </form>
-          </div>
-      </div>
-
+    
       <div class="sidebar">
           <ul class="nav-links">
               <li><a href="javascript:void(0)"><i class="fas fa-home" style="color: #28a745;"></i> <span>Home</span></a></li>
               <li class="has-dropdown">
                   <a href="javascript:void(0)"><i class="fas fa-tachometer-alt" style="color: #ff5722;"></i> <span>HRMS</span> <i class="fas fa-chevron-down"></i></a>
-                  <ul class="dropdown">
-                      <li><a href="Recuriment.html" target="iframe-content" title="Recruitment"><i class="fas fa-user-plus"></i><span> Recruitment</span></a></li>
-                      <!-- [Other dropdown items unchanged] -->
-                  </ul>
+        <ul class="dropdown">
+          <li><a href="Recuriment.html" target="iframe-content" title="Recruitment"><i class="fas fa-user-plus"></i><span> Recruitment</span></a></li>
+          <li><a href="Hr's_profile.html" target="iframe-content" title="Profile"><i class="fas fa-id-badge"></i><span> Hr_Profile</span></a></li>
+          <li><a href="Hiring_page.html" target="iframe-content" title="Hiring_page"><i class="fas fa-briefcase"></i> <span>Hiring</span></a></li>
+          <li><a href="OnboardingForm.html" target="iframe-content" title="onboarding"><i class="fas fa-briefcase"></i> <span>Onboarding</span></a></li>
+          <li><a href="Emp_calendar.html" target="iframe-content" title="calendar"><i class="fas fa-calendar-alt"></i><span>Calendar</span></a></li>
+          <li><a href="Staff_Management.html" target="iframe-content" title="Staff_Management"><i class="fas fa-users"></i> <span>Staff Management</span></a></li>
+          <li><a href="Project.html" target="iframe-content" title="Project"><i class="fas fa-tasks"></i><span> Project Management</span></a></li>
+          <li><a href="TestTask_hr.html" target="iframe-content" title="Task_Management"><i class="fas fa-check-circle"></i> <span>Task Management</span></a></li>
+          <li><a href="Leave_Management.html" target="iframe-content" title="Leave_Management"><i class="fas fa-plane-departure"></i><span>Leave Management</span></a></li>
+          <li><a href="TestAttendancemanagement.html" target="iframe-content" title="Attendance_Management"><i class="fas fa-user-check"></i><span> Attendance</span></a></li>
+          <li><a href="TestClaim_Hr.html" target="iframe-content" title="Claims_Managements"><i class="fas fa-file-invoice-dollar"></i> <span>Claims</span></a></li>
+          <li><a href="Notifications.html" target="iframe-content" title="Notification"><i class="fas fa-bell"></i><span> Notifications</span></a></li>
+          <li><a href="Assert_Management.html" target="iframe-content" title="Asset_Management"><i class="fas fa-box"></i> <span>Asset Request</span></a></li>
+          <li><a href="Assert_Submit.html" target="iframe-content" title="Asset_Management"><i class="fas fa-box"></i> <span>Asset Management</span></a></li>
+          <li><a href="Increment-Bounus.html" target="iframe-content" title="Increment-Bounus"><i class="fas fa-chart-line"></i><span> Increment & Bonus</span></a></li>
+          <li><a href="Apprisal_Hr.html" target="iframe-content" title="Apprisal"><i class="fas fa-chart-line"></i><span> Apprisal</span></a></li>
+          <li><a href="Payroll_Management.html" target="iframe-content" title="Payroll_Management"><i class="fas fa-money-bill-wave"></i> <span>Payroll</span></a></li>
+          <li><a href="Training_Management.html" target="iframe-content" title="Training_Management"><i class="fas fa-chalkboard-teacher"></i><span> Training</span></a></li>
+          <li><a href="Career_Progression.html" target="iframe-content" title="career_progression"><i class="fas fa-chart-bar"></i> <span>Career Progression</span></a></li>
+          <li><a href="Offboarding_Management.html" target="iframe-content" title="Offboarding_Management"><i class="fas fa-sign-out-alt"></i> <span>Offboarding</span></a></li>
+        </ul>
               </li>
               <li class="has-dropdown">
                   <a href="javascript:void(0)"><i class="fas fa-user" style="color: #007bff;"></i> <span>EMPLOYEE</span> <i class="fas fa-chevron-down"></i></a>
-                  <ul class="dropdown">
-                      <li><a href="Personalinfo_Dashboard.html" target="iframe-content" title="Onboarding"><i class="fas fa-user-plus"></i><span>Onboarding</span></a></li>
-                      <!-- [Other dropdown items unchanged] -->
-                  </ul>
+        <ul class="dropdown">
+          <li><a href="Personalinfo_Dashboard.html" target="iframe-content" title="Onboarding"><i class="fas fa-user-plus"></i><span>Onboarding</span></a></li>
+          <li><a href="Assert.html" target="iframe-content" title="Asset"><i class="fas fa-box"></i><span> Asset</span></a></li>
+          <li><a href="Profile.html" target="iframe-content" title="Profile"><i class="fas fa-id-badge"></i><span>Profile</span></a></li>
+          <li><a href="Courses_Homepage.html" target="iframe-content" title="Courses"><i class="fas fa-book"></i><span>Courses</span></a></li>
+          <li><a href="Emp_calendar.html" target="iframe-content" title="calendar"><i class="fas fa-calendar-alt"></i><span>Calendar</span></a></li>
+          <li><a href="TestTask_emp.html" target="iframe-content" title="Task"><i class="fas fa-tasks"></i> <span>Task</span></a></li>
+          <li><a href="Emp_Leave_Calendar.html" target="iframe-content" title="Leave"><i class="fas fa-plane-departure"></i> <span>Leave</span></a></li>
+          <li><a href="Clock.html" target="iframe-content" title="Attendance"><i class="fas fa-user-check"></i> <span>Attendance</span></a></li>
+          <li><a href="Emp_payslip.html" target="iframe-content" title="Pay-Slip"><i class="fas fa-money-bill-wave"></i> <span>Pay-Slip</span></a></li>
+          <li><a href="Testclaim_Emp.html" target="iframe-content" title="Claims"><i class="fas fa-file-invoice-dollar"></i> <span>Claims</span></a></li>
+          <li><a href="Emp_Notification.html" target="iframe-content" title="Notification"><i class="fas fa-bell"></i><span>Notifications</span></a></li>
+          <li><a href="Emp_career_progression.html" target="iframe-content" title="career_progression"><i class="fas fa-chart-bar"></i><span> Career Progression</span></a></li>
+          <li><a href="Performance_management.html" title="Appraisal" target="iframe-content"><i class="fas fa-chart-line"></i><span> Appraisal</span></a></li>
+          <li><a href="Offboarding.html" target="iframe-content" title="Offboarding"><i class="fas fa-sign-out-alt"></i> <span>Offboarding</span></a></li>
+        </ul>
               </li>
               <li><a href="javascript:void(0)"><i class="fas fa-chart-line" style="color: #4caf50;"></i> <span>Analytics</span></a></li>
               <li><a href="javascript:void(0)"><i class="fas fa-tasks" style="color: #ff9800;"></i> <span>Task List</span></a></li>
@@ -710,15 +782,15 @@
           <header class="header">
               <div class="header-left">
                   <div class="logo">
-                      <img src="logo.png" alt="Company Logo" class="company-logo">
+                      <img src="image.webp" alt="Company Logo" class="company-logo">
                   </div>
                   <button class="toggle-btn">
-                      <i class="fas fa-bars" style="color: black;"></i>
+                      <i class="fas fa-bars" ></i>
                   </button>
-                  <div class="search-container">
-                      <input type="text" class="search-input" placeholder="Search...">
-                      <span class="search-icon"></span>
-                  </div>
+<div class="search-container">
+    <input type="text" class="search-input" placeholder="Search..." id="globalSearch">
+    <span class="search-icon"><i class="fas fa-search"></i></span>
+</div>
               </div>
               <div class="header-right">
                   <span class="icon">
@@ -733,8 +805,11 @@
                   <span class="calenadar">
                       <i class="flaticon-custom calendar-icon" style="background-image: url('https://cdn-icons-png.flaticon.com/512/3652/3652191.png'); width: 20px; height: 20px; display: inline-block;"></i>
                   </span>
-                  <span id="header-username" class="userDisplay" style="color: #4a90e2;">Guest</span>
-                  <img id="header-profile-picture" class="header-profile-picture" src="https://via.placeholder.com/40" alt="Profile Picture">
+<div id="user-display" style="display: flex; align-items: center; gap: 10px;">
+    <img id="header-profile-picture" src="https://via.placeholder.com/40" alt="Profile" 
+         style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+    <span id="header-username" style="color: #4a90e2;">Guest</span>
+</div>
                   <select class="status-dropdown available">
                       <option value="available" class="available">🟢 Available</option>
                       <option value="busy" class="busy">🔴 Meeting</option>
@@ -745,223 +820,302 @@
           </header>
 
           <div class="content-section">
-              <main style="width: 104%; height: 100vh;">
-                  <iframe name="iframe-content" src="Content3.html" scrolling="yes"></iframe>
+              <main style="width: 103%; height: 100vh; ">
+                  <iframe name="iframe-content" src="Content3.html" scrolling="yes" ></iframe>
               </main>
           </div>
       </div>
 
-      <script>
-          // Load Google Fonts for Poppins
-          const link = document.createElement('link');
-          link.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap';
-          link.rel = 'stylesheet';
-          document.head.appendChild(link);
+  <script>// Load Google Fonts for Poppins
+const link = document.createElement('link');
+link.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap';
+link.rel = 'stylesheet';
+document.head.appendChild(link);
 
-          // Utility function to get cookie value
-          function getCookie(name) {
-              const value = `; ${document.cookie}`;
-              const parts = value.split(`; ${name}=`);
-              if (parts.length === 2) return parts.pop().split(';').shift();
-              return null;
-          }
+// Utility function to get cookie value
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+}
 
-          // Fetch user data from server
-          async function fetchUserData() {
-              try {
-                  const response = await fetch('http://localhost:3000/api/user', {
-                      method: 'GET',
-                      credentials: 'include'
-                  });
+// Unified user data loader
+async function loadUserData() {
+    const headerUsername = document.getElementById('header-username');
+    const headerProfilePic = document.getElementById('header-profile-picture');
+    
+    try {
+        console.log('Attempting to load user data...');
+        
+        const response = await fetch('http://127.0.0.1:5500/api/user', {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
 
-                  if (!response.ok) {
-                      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                  }
+        console.log('Response status:', response.status);
+        
+        if (response.status === 401) {
+            throw new Error('Please login to continue');
+        }
 
-                  const data = await response.json();
-                  const { name, profilePicture } = data;
+        if (!response.ok) {
+            const error = await response.json().catch(() => ({}));
+            throw new Error(error.message || 'Failed to load user data');
+        }
 
-                  const headerUsername = document.getElementById('header-username');
-                  if (headerUsername) headerUsername.textContent = name || 'Guest';
+        const user = await response.json();
+        console.log('User data:', user);
+        
+        // Update UI elements if they exist
+        if (headerUsername) {
+            headerUsername.textContent = user.name || 'Guest';
+        }
+        
+        if (headerProfilePic) {
+            headerProfilePic.src = user.profilePicture || 'https://via.placeholder.com/40';
+            headerProfilePic.onerror = () => {
+                headerProfilePic.src = 'https://via.placeholder.com/40';
+            };
+        }
+        
+    } catch (error) {
+        console.error('User data load failed:', error);
+        // Redirect to login if unauthorized
+        if (error.message.includes('401') || error.message.includes('403')) {
+            window.location.href = '../Login/index.html';
+        }
+    }
+}
 
-                  const sidebarProfilePicture = document.getElementById('sidebar-profile-picture');
-                  const headerProfilePicture = document.getElementById('header-profile-picture');
-                  const defaultImage = 'https://via.placeholder.com/150';
-                  if (profilePicture) {
-                      if (sidebarProfilePicture) sidebarProfilePicture.src = profilePicture;
-                      if (headerProfilePicture) headerProfilePicture.src = profilePicture;
-                  } else {
-                      if (sidebarProfilePicture) sidebarProfilePicture.src = defaultImage;
-                      if (headerProfilePicture) headerProfilePicture.src = defaultImage;
-                  }
-              } catch (error) {
-                  console.error('Error fetching user data:', error.message);
-                  if (error.message.includes('401') || error.message.includes('403')) {
-                      alert('Unauthorized, please login.');
-                      window.location.href = '../Login/index.html';
-                  } else {
-                      const headerUsername = document.getElementById('header-username');
-                      const sidebarProfilePicture = document.getElementById('sidebar-profile-picture');
-                      const headerProfilePicture = document.getElementById('header-profile-picture');
-                      if (headerUsername) headerUsername.textContent = 'Guest';
-                      if (sidebarProfilePicture) sidebarProfilePicture.src = 'https://via.placeholder.com/150';
-                      if (headerProfilePicture) headerProfilePicture.src = 'https://via.placeholder.com/40';
-                  }
-              }
-          }
+// Sidebar toggle
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const mainContent = document.querySelector('.main-content');
 
-          // Sidebar toggle
-          function toggleSidebar() {
-              const sidebar = document.querySelector('.sidebar');
-              const mainContent = document.querySelector('.main-content');
+    if (sidebar && mainContent) {
+        if (window.innerWidth > 992) {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        } else {
+            sidebar.classList.toggle('active');
+        }
+    }
+}
 
-              if (sidebar && mainContent) {
-                  if (window.innerWidth > 992) {
-                      sidebar.classList.toggle('collapsed');
-                      mainContent.classList.toggle('expanded');
-                  } else {
-                      sidebar.classList.toggle('active');
-                  }
-              }
-          }
+// Dropdown handling
+function setupDropdowns() {
+    document.querySelectorAll('.has-dropdown').forEach(function (item) {
+        item.addEventListener('click', function (event) {
+            event.stopPropagation();
+            const dropdown = this.querySelector('.dropdown');
+            const isActive = this.classList.contains('active');
 
-          const toggleBtn = document.querySelector('.toggle-btn');
-          if (toggleBtn) toggleBtn.addEventListener('click', toggleSidebar);
+            document.querySelectorAll('.has-dropdown').forEach(function (el) {
+                if (el !== item) {
+                    el.classList.remove('active');
+                    const otherDropdown = el.querySelector('.dropdown');
+                    if (otherDropdown) otherDropdown.style.display = 'none';
+                }
+            });
 
-          // Dropdown handling
-          document.querySelectorAll('.has-dropdown').forEach(function (item) {
-              item.addEventListener('click', function (event) {
-                  event.stopPropagation();
-                  const dropdown = this.querySelector('.dropdown');
-                  const isActive = this.classList.contains('active');
+            if (dropdown) {
+                this.classList.toggle('active', !isActive);
+                dropdown.style.display = isActive ? 'none' : 'block';
+            }
+        });
+    });
 
-                  document.querySelectorAll('.has-dropdown').forEach(function (el) {
-                      if (el !== item) {
-                          el.classList.remove('active');
-                          const otherDropdown = el.querySelector('.dropdown');
-                          if (otherDropdown) otherDropdown.style.display = 'none';
-                      }
-                  });
+    document.addEventListener('click', function (event) {
+        const target = event.target;
+        const isDropdownOrChild = target.closest('.has-dropdown');
 
-                  if (dropdown) {
-                      this.classList.toggle('active', !isActive);
-                      dropdown.style.display = isActive ? 'none' : 'block';
-                  }
-              });
-          });
+        if (!isDropdownOrChild) {
+            document.querySelectorAll('.has-dropdown').forEach(function (item) {
+                item.classList.remove('active');
+                const dropdown = item.querySelector('.dropdown');
+                if (dropdown) dropdown.style.display = 'none';
+            });
+        }
+    });
+}
 
-          document.addEventListener('click', function (event) {
-              const target = event.target;
-              const isDropdownOrChild = target.closest('.has-dropdown');
+// Logout handling
+async function logout() {
+    try {
+        await fetch('http://127.0.0.1:5500/api/logout', {
+            method: 'POST',
+            credentials: 'include'
+        });
+        console.log('Logout successful');
+        window.location.href = '../Login/index.html';
+    } catch (error) {
+        console.error('Error during logout:', error);
+        window.location.href = '../Login/index.html';
+    }
+}
 
-              if (!isDropdownOrChild) {
-                  document.querySelectorAll('.has-dropdown').forEach(function (item) {
-                      item.classList.remove('active');
-                      const dropdown = item.querySelector('.dropdown');
-                      if (dropdown) dropdown.style.display = 'none';
-                  });
-              }
-          });
+// Responsive handling
+function handleResize() {
+    const sidebar = document.querySelector('.sidebar');
+    const mainContent = document.querySelector('.main-content');
+    if (sidebar && mainContent && window.innerWidth <= 992) {
+        sidebar.classList.remove('collapsed');
+        mainContent.classList.remove('expanded');
+        sidebar.classList.remove('active');
+    }
+}
 
-          document.addEventListener('DOMContentLoaded', function () {
-              const dropdownLinks = document.querySelectorAll('.dropdown li a');
-              dropdownLinks.forEach(link => {
-                  link.addEventListener('click', function (event) {
-                      event.stopPropagation();
-                      dropdownLinks.forEach(item => item.classList.remove('selected-module'));
-                      this.classList.add('selected-module');
-                  });
-              });
-          });
+// Search functionality
+function setupSearch() {
+    const searchInput = document.getElementById('globalSearch');
+    const allLinks = document.querySelectorAll('.nav-links a[target="iframe-content"]');
+    
+    if (searchInput) {
+        // Add event listener for input changes
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            
+            // First search in HRMS dropdown
+            searchInDropdown('.has-dropdown:first-child .dropdown', searchTerm);
+            
+            // Then search in EMPLOYEE dropdown
+            searchInDropdown('.has-dropdown:nth-child(2) .dropdown', searchTerm);
+        });
+        
+        // Add event listener for Enter key
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        // Add click event to search icon
+        const searchIcon = document.querySelector('.search-icon');
+        if (searchIcon) {
+            searchIcon.addEventListener('click', performSearch);
+        }
+    }
+    
+    function searchInDropdown(dropdownSelector, searchTerm) {
+        const dropdown = document.querySelector(dropdownSelector);
+        if (!dropdown) return;
+        
+        let foundAny = false;
+        const items = dropdown.querySelectorAll('li');
+        
+        items.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            const link = item.querySelector('a');
+            
+            if (searchTerm === '' || text.includes(searchTerm)) {
+                item.style.display = 'block';
+                foundAny = true;
+                
+                // Highlight matching text
+                if (searchTerm !== '' && link) {
+                    const span = link.querySelector('span');
+                    if (span) {
+                        const originalText = span.textContent;
+                        const regex = new RegExp(`(${searchTerm})`, 'gi');
+                        span.innerHTML = originalText.replace(regex, '<mark>$1</mark>');
+                    }
+                }
+            } else {
+                item.style.display = 'none';
+                // Remove highlighting if no match
+                const span = item.querySelector('span');
+                if (span) {
+                    span.innerHTML = span.textContent;
+                }
+            }
+        });
+        
+        // Auto-expand the parent dropdown if matches found
+        const parent = dropdown.closest('.has-dropdown');
+        if (foundAny && searchTerm !== '') {
+            parent.classList.add('active');
+            dropdown.style.display = 'block';
+        }
+    }
+    
+    function performSearch() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        if (searchTerm === '') return;
+        
+        // Search through all links and find the first match
+        let firstMatch = null;
+        allLinks.forEach(link => {
+            const text = link.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+                if (!firstMatch) {
+                    firstMatch = link;
+                }
+            }
+        });
+        
+        // If a match is found, navigate to it
+        if (firstMatch) {
+            firstMatch.click();
+            
+            // Highlight the selected module
+            allLinks.forEach(link => link.classList.remove('selected-module'));
+            firstMatch.classList.add('selected-module');
+            
+            // Close the search input
+            searchInput.value = '';
+            
+            // Remove any highlighting
+            document.querySelectorAll('mark').forEach(mark => {
+                mark.outerHTML = mark.innerHTML;
+            });
+        } else {
+            alert('No matching pages found');
+        }
+    }
+}
 
-          // Status dropdown handling
-          const statusDropdown = document.getElementById('statusDropdown');
-          const addStatusModal = document.getElementById('addStatusModal');
-          const addStatusForm = document.getElementById('addStatusForm');
-          const cancelModalBtn = document.getElementById('cancelModal');
-
-          if (statusDropdown && addStatusModal) {
-              statusDropdown.addEventListener('change', function () {
-                  if (this.value === 'add-status') {
-                      addStatusModal.style.display = 'flex';
-                      this.value = 'available';
-                  }
-              });
-          }
-
-          if (addStatusModal) {
-              addStatusModal.addEventListener('click', function (event) {
-                  if (event.target === addStatusModal) {
-                      addStatusModal.style.display = 'none';
-                  }
-              });
-          }
-
-          if (cancelModalBtn) {
-              cancelModalBtn.addEventListener('click', function () {
-                  addStatusModal.style.display = 'none';
-              });
-          }
-
-          if (addStatusForm) {
-              addStatusForm.addEventListener('submit', function (event) {
-                  event.preventDefault();
-                  const statusName = document.getElementById('statusName').value;
-                  const statusColor = document.getElementById('statusColor').value;
-
-                  if (statusName.trim()) {
-                      const newOption = document.createElement('option');
-                      newOption.value = statusName.toLowerCase().replace(/\s+/g, '-');
-                      newOption.textContent = `● ${statusName}`;
-                      newOption.style.color = statusColor;
-                      statusDropdown.insertBefore(newOption, statusDropdown.querySelector('option[value="add-status"]'));
-                      addStatusModal.style.display = 'none';
-                      addStatusForm.reset();
-                  } else {
-                      alert('Please enter a status name.');
-                  }
-              });
-          }
-
-          // Logout handling
-          async function logout() {
-              try {
-                  await fetch('http://localhost:3000/api/logout', {
-                      method: 'POST',
-                      credentials: 'include'
-                  });
-                  console.log('Logout successful');
-                  window.location.href = '../Login/index.html';
-              } catch (error) {
-                  console.error('Error during logout:', error);
-                  window.location.href = '../Login/index.html';
-              }
-          }
-
-          const logoutLink = document.getElementById('logoutLink');
-          if (logoutLink) {
-              logoutLink.addEventListener('click', function (event) {
-                  event.preventDefault();
-                  logout();
-              });
-          }
-
-          // Responsive handling
-          function handleResize() {
-              const sidebar = document.querySelector('.sidebar');
-              const mainContent = document.querySelector('.main-content');
-              if (sidebar && mainContent && window.innerWidth <= 992) {
-                  sidebar.classList.remove('collapsed');
-                  mainContent.classList.remove('expanded');
-                  sidebar.classList.remove('active');
-              }
-          }
-
-          window.addEventListener('resize', handleResize);
-          handleResize();
-
-          // Call fetchUserData on page load
-          document.addEventListener('DOMContentLoaded', fetchUserData);
-      </script>
+// Initialize all functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Load user data
+    loadUserData();
+    
+    // Setup sidebar toggle
+    const toggleBtn = document.querySelector('.toggle-btn');
+    if (toggleBtn) toggleBtn.addEventListener('click', toggleSidebar);
+    
+    // Setup dropdowns
+    setupDropdowns();
+    
+    // Setup logout
+    const logoutLink = document.getElementById('logoutLink');
+    if (logoutLink) {
+        logoutLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            logout();
+        });
+    }
+    
+    // Setup search
+    setupSearch();
+    
+    // Setup window resize handler
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    
+    // Setup module selection highlighting
+    const dropdownLinks = document.querySelectorAll('.dropdown li a');
+    dropdownLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.stopPropagation();
+            dropdownLinks.forEach(item => item.classList.remove('selected-module'));
+            this.classList.add('selected-module');
+        });
+    });
+});
+</script>
   </body>
 </html>
