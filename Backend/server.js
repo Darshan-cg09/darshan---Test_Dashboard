@@ -91,7 +91,7 @@ app.get('/forgot-password', (req, res) => {
   res.sendFile(path.join(__dirname, '../Forgot/index.html'));
 });
 
-app.get('/dashboard', authenticateToken, (req, res) => {
+app.get('/dashboard', (req, res) => {
   const filePath = path.join(__dirname, '../Dashboard/dashboard.html');
   console.log('Attempting to serve:', filePath);
   res.sendFile(filePath);
