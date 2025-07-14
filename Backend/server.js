@@ -93,7 +93,6 @@ app.get('/forgot-password', (req, res) => {
 
 app.get('/dashboard', (req, res) => {
   const filePath = path.join(__dirname, '../Dashboard/dashboard.html');
-  console.log('Attempting to serve:', filePath);
   res.sendFile(path.resolve(__dirname, 'Dashboard', 'dashboard.html'));
 });
 
