@@ -15,15 +15,15 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
 const pool = new Pool({
   user: process.env.DB_USER || 'postgres',
-  host: process.env.DB_HOST || 'localhost',
+  host: process.env.DB_HOST || 'poostgres',
   database: process.env.DB_DATABASE || 'login',
-  password: process.env.DB_PASSWORD || 'Veera@0134',
+  password: process.env.DB_PASSWORD || 'admin123',
   port: parseInt(process.env.DB_PORT) || 5432,
 });
 
 // In your server.js
 app.use(cors({
-    origin: 'http://127.0.0.1:5500',
+    origin: 'http://13.49.67.176:5500',
     credentials: true,
     exposedHeaders: ['set-cookie']
 }));
@@ -302,7 +302,7 @@ app.get('/api/protected', authenticateToken, (req, res) => {
 
 initDatabase().then(() => {
 app.listen(port, '127.0.0.1', () => {
-  console.log(`Server running on http://127.0.0.1:${port}`);
+  console.log(`Server running on http://13.49.67.176:${port}`);
   console.log('Available routes:');
     console.log('GET  /                 -> Login page');
     console.log('GET  /signup           -> Signup page');
