@@ -23,7 +23,7 @@ const pool = new Pool({
 
 // In your server.js
 app.use(cors({
-    origin: '*',
+    origin: 'http://13.49.67.176:8767', 'http://13.49.67.176:8768',
     credentials: true,
     exposedHeaders: ['set-cookie']
 }));
